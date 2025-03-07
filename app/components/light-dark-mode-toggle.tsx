@@ -1,34 +1,17 @@
-import { useState } from "react";
 import { MoonIcon, SunIcon } from "lucide-react";
-import { Theme } from "remix-themes";
-// import { useTheme } from "~/components/theme-provider";
+import { useTheme } from "~/contexts/theme.context";
 
-type Props = {
-  className?: string;
-  size?: number;
-};
-
-function LightDarkModeToggle({ className }: Props) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  // const { setTheme } = useTheme();
+function LightDarkModeToggle() {
+  const { theme, setTheme } = useTheme();
 
   return (
-    <div
-      role="button"
-      className={className}
+    <a
       onClick={() => {
-        setIsDarkMode((prevValue) => !prevValue);
-        // setTheme(isDarkMode ? Theme.LIGHT : Theme.DARK);
-        // document.body.classList.toggle("dark");
-        // console.log(document.body.classList);
+        setTheme(theme === "dark" ? "light" : "dark");
       }}
     >
-      {isDarkMode ? (
-        <SunIcon className="h-16 w-16" />
-      ) : (
-        <MoonIcon className="h-16 w-16" />
-      )}
-    </div>
+      {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+    </a>
   );
 }
 

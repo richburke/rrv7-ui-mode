@@ -9,4 +9,5 @@ declare module "react-router" {
 type Params = {
   "/": {};
   "/about": {};
+  "/action/set-theme": {};
 };

@@ -24,3 +24,9 @@ It's also installed icons through `lucide-react`.
 ```
 npm i remix-themes
 ```
+
+### Notes
+- `sessions.server.tsx` in `.server`
+- Two paths:
+    - You want to get something done as soon as possible
+    - You're learning
