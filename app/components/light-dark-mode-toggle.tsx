@@ -1,16 +1,16 @@
 import { MoonIcon, SunIcon } from "lucide-react";
-import { useTheme } from "~/contexts/theme.context";
+import { Theme, useTheme } from "~/contexts/theme.context";
 
 function LightDarkModeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, applyTheme } = useTheme();
 
   return (
     <a
-      onClick={() => {
-        setTheme(theme === "dark" ? "light" : "dark");
-      }}
+      onClick={() =>
+        applyTheme(theme === Theme.DARK ? Theme.LIGHT : Theme.DARK)
+      }
     >
-      {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+      {theme === Theme.DARK ? <SunIcon /> : <MoonIcon />}
     </a>
   );
 }

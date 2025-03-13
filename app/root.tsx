@@ -1,12 +1,19 @@
 import {
+  data,
   isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "react-router";
-import { ThemeProvider, useTheme } from "~/contexts/theme.context";
+import {
+  themeDefault,
+  ThemeProvider,
+  useTheme,
+} from "~/contexts/theme.context";
+import { commitSession, getSession } from "~/.server/sessions.server";
 import type { Route } from "./+types/root";
 import "./app.css";
 
@@ -23,7 +30,26 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
-function WrappedLayout({ children }: { children: React.ReactNode }) {
+export async function loader({ request }: Route.LoaderArgs) {
+  const session = await getSession(request.headers.get("Cookie"));
+
+  if (!session.has("theme")) {
+    session.set("theme", themeDefault);
+  }
+  return data(
+    {
+      error: session.get("error"),
+      theme: session.get("theme"),
+    },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    }
+  );
+}
+
+function Document({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme();
   return (
     <html lang="en" className={theme}>
@@ -43,9 +69,11 @@ function WrappedLayout({ children }: { children: React.ReactNode }) {
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useLoaderData<typeof loader>();
+  const theme = data.theme;
   return (
-    <ThemeProvider>
-      <WrappedLayout>{children}</WrappedLayout>
+    <ThemeProvider startingTheme={theme}>
+      <Document>{children}</Document>
     </ThemeProvider>
   );
 }

@@ -1,14 +1,19 @@
 import type { Route } from "../+types/about";
 import { getSession, commitSession } from "~/.server/sessions.server";
+import { Theme } from '~/contexts/theme.context'
 
 export async function action({ request }: Route.ActionArgs) {
     const session = await getSession(request.headers.get("Cookie"));
-    const data = await request.json()
-    session.set("theme", data.theme);
-    
-    return JSON.stringify({
-        headers: {
-          "Set-Cookie": await commitSession(session),
-        },
-      });
+
+    const theme = !session.has("theme") ? Theme.DARK : session.get("theme");
+  
+    const newTheme = theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
+    session.set("theme", newTheme);
+  
+    const cookie = await commitSession(session);
+    return new Response(null, {
+      headers: {
+        "Set-Cookie": cookie,
+      },
+    });
 }

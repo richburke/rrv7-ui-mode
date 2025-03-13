@@ -1,30 +1,36 @@
 import { createContext, useContext, useState } from "react";
 
-type Theme = "dark" | "light";
+export enum Theme {
+  DARK = "dark",
+  LIGHT = "light",
+}
+export const themeDefault = Theme.LIGHT;
+
 type ThemeProviderProps = {
   children: React.ReactNode;
-  defaultTheme?: Theme;
+  startingTheme?: Theme;
   storageKey?: string;
 };
 
-const defTheme = "light";
 const ThemeContext = createContext<{
   theme: Theme;
+  applyTheme: (theme: Theme) => void;
   setTheme: (theme: Theme) => void;
 }>({
-  theme: defTheme,
+  theme: themeDefault,
+  applyTheme: () => {},
   setTheme: () => {},
 });
 
 export function ThemeProvider({
   children,
-  defaultTheme = defTheme,
+  startingTheme = themeDefault,
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState(defaultTheme);
+  const [theme, setTheme] = useState(startingTheme);
 
   const contextValue = {
     theme,
-    setTheme: async (theme: Theme) => {
+    applyTheme: async (theme: Theme) => {
       setTheme(theme);
 
       const _ = await fetch("/action/set-theme", {
@@ -35,6 +41,7 @@ export function ThemeProvider({
         body: JSON.stringify({ theme }),
       });
     },
+    setTheme,
   };
 
   return (

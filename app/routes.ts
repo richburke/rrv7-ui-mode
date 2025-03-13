@@ -5,5 +5,5 @@ export default [
     route("about", "routes/about.tsx"),
     ...prefix("action", [
         route("set-theme", "routes/actions/set-theme.ts"),
-      ]),
+    ]),
 ] satisfies RouteConfig;

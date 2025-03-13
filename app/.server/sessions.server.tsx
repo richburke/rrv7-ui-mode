@@ -1,7 +1,8 @@
 import { createCookieSessionStorage } from "react-router";
+import { Theme } from "~/contexts/theme.context";
 
 type SessionData = {
-  theme: string;
+  theme: Theme;
 };
 
 type SessionFlashData = {
@@ -10,13 +11,11 @@ type SessionFlashData = {
 
 const isProduction = process.env.NODE_ENV === "production";
 
-// @todo
-// dotenv
-
+const sessionName = "__session";
 const { getSession, commitSession, destroySession } =
   createCookieSessionStorage<SessionData, SessionFlashData>({
     cookie: {
-      name: "__session",
+      name: sessionName,
       httpOnly: true,
       maxAge: 60,
       path: "/",
