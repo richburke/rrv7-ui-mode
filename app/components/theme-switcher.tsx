@@ -1,7 +1,7 @@
 import { MoonIcon, SunIcon } from "lucide-react";
 import { Theme, useTheme } from "~/contexts/theme.context";
 
-function LightDarkModeToggle() {
+function ThemeSwitcher() {
   const { theme, applyTheme } = useTheme();
 
   return (
@@ -15,4 +15,4 @@ function LightDarkModeToggle() {
   );
 }
 
-export { LightDarkModeToggle };
+export { ThemeSwitcher };

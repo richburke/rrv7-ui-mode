@@ -11,10 +11,7 @@ npm i
 Take a look at app.css
 
 https://ui.shadcn.com/docs/installation/react-router
-```
-npx shadcn@latest add button
 
-```
 
 Take a look at app.css again.
 
