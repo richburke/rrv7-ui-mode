@@ -9,7 +9,6 @@ export const themeDefault = Theme.LIGHT;
 type ThemeProviderProps = {
   children: React.ReactNode;
   startingTheme?: Theme;
-  storageKey?: string;
 };
 
 const ThemeContext = createContext<{
